@@ -25,10 +25,151 @@ Use it to make something cool, have fun, and share what you've learned with othe
 padding:0;
 margin:0;
 }
+html,
+body
+{
+height:100%;
+}
 .clr
 {
 clear:both;
 height:0;
 line-height: 0;
 font-size: 0;
+}
+
+img
+{
+max-width:100%;
+}
+
+.outermargin
+{
+position:relative;
+width:100%;
+max-width:480px;
+margin:0px auto;
+}
+
+
+#slidemenubox
+{
+position : fixed;
+width : 100%;
+bottom  :  0px;
+}
+#slidemenu
+{
+position: fixed;
+width : 100%;
+height  :  100%;
+bottom  :  0px;
+left  : 0px;
+text-align  :  center;
+overflow : hidden;
+z-index:98;
+opacity:0;
+background-color:rgba(0, 0, 0, 0.8);
+}
+#slidemenu ul
+{
+padding:15% 5% 15%;
+max-width:360px;
+margin:0px auto;
+}
+
+#slidemenu ul li
+{
+list-style-type: none;
+}
+
+
+#slidemenutoggle
+{
+position : relative;
+z-index:99;
+}
+
+#pagecontainer
+{
+min-height:100%;
+}
+
+#maincontent
+{
+}
+
+
+a.coverimage
+{
+display: block;
+width:100%;
+text-align:center;
+}
+a.coverimage img
+{
+width:auto;
+background-size: cover;
+width:180px;
+height:180px;
+border-radius: 200px;
+}
+
+#maincontent .post-title
+{
+text-align:center;
+}
+
+
+
+
+
+
+/* styling */
+body{
+font-family: "arial", helvetica, sans-serif;
+color:white;
+background-color:#404040;
+}
+
+body.home.page
+{
+background-color:#000000;
+}
+#slidemenutoggle
+{
+text-align: center;
+height:20px;
+width:44px;
+padding:20px 10px;
+margin:3% auto 8%;
+border-radius: 200px;
+background-color:dimgrey;
+}
+
+a,
+#slidemenu ul li a,
+#slidemenu ul li a span
+{
+color:white;
+}
+#slidemenu ul li a
+{
+display: block;
+padding:5% 0;
+}
+
+
+#maincontent
+{
+position : relative;
+padding:12% 5% 25%;
+line-height:1.3em;
+}
+
+#maincontent h1,
+#maincontent h2
+{
+line-height:1.4em;
+margin:10px 0px;
 }

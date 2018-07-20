@@ -14,6 +14,9 @@
  * 20161007 - Oddsized - modified html, php and css, replaced all text-domains
  * 20161006 - Oddsized - modified php, html and css
  * 20170830 - Oddsized - renamed prefixes and text domains and added the menu codes to the Imagazine theme
+
+  * 20180619 - Webbouwer - renamed prefixes and text domains and added the menu codes to the minimob theme
+  * 20180619 - Webbouwer - moving menu_image_add_inline_style_action style link to index.php
  */
 
 /**
@@ -88,7 +91,7 @@ class Menu_Image_Plugin {
 		add_action( 'admin_head-nav-menus.php', array( $this, 'menu_image_admin_head_nav_menus_action' ) );
 		add_filter( 'wp_setup_nav_menu_item', array( $this, 'menu_image_wp_setup_nav_menu_item' ) );
 		add_filter( 'walker_nav_menu_start_el', array( $this, 'menu_image_nav_menu_item_filter' ), 10, 4 );
-		add_action( 'wp_enqueue_scripts', array( $this, 'menu_image_add_inline_style_action' ) );
+		//add_action( 'wp_enqueue_scripts', array( $this, 'menu_image_add_inline_style_action' ) );
 		add_action( 'admin_action_delete-menu-item-image', array( $this, 'menu_image_delete_menu_item_image_action' ) );
 		add_action( 'wp_ajax_set-menu-item-thumbnail', array( $this, 'wp_ajax_set_menu_item_thumbnail' ) );
 		// Add support for additional image types
@@ -147,7 +150,7 @@ class Menu_Image_Plugin {
 				add_image_size($name, $params[0], $params[1], $params[2]);
 			}
 		}
-		load_plugin_textdomain( 'imagazine', false, basename( dirname( __FILE__ ) ) . '/languages' );
+		load_plugin_textdomain( 'minimob', false, basename( dirname( __FILE__ ) ) . '/languages' );
 	}
 	/**
 	 * Adding images as screen options.
@@ -159,7 +162,7 @@ class Menu_Image_Plugin {
 	 * @return array
 	 */
 	public function menu_image_nav_menu_manage_columns( $columns ) {
-		return $columns + array( 'image' => __( 'Image', 'imagazine' ) );
+		return $columns + array( 'image' => __( 'Image', 'minimob' ) );
 	}
 	/**
 	 * Saving post action.
@@ -424,8 +427,8 @@ class Menu_Image_Plugin {
 		 * original: wp_register_style( 'menu-image', plugins_url( '', __FILE__ ) . '/menu-image.css', array(), '1.1', 'all' );
 		 * @file Url to theme folder
 		 */
-		wp_register_style( 'imagazine-menu-image', esc_url( get_template_directory_uri() ).'/assets/menu.css', array(), '1.1', 'all' );
-		wp_enqueue_style( 'imagazine-menu-image' );
+		wp_register_style( 'minimob-menu-image', esc_url( get_template_directory_uri() ).'/assets/menu.css', array(), '1.1', 'all' );
+		wp_enqueue_style( 'minimob-menu-image' );
 	}
 	/**
 	 * Loading media-editor script ot nav-menus page.
@@ -443,8 +446,8 @@ class Menu_Image_Plugin {
 		wp_localize_script(
 			'menu-image-admin', 'menuImage', array(
 				'l10n'     => array(
-					'uploaderTitle'      => __( 'Chose menu image', 'imagazine' ),
-					'uploaderButtonText' => __( 'Select', 'imagazine' ),
+					'uploaderTitle'      => __( 'Chose menu image', 'minimob' ),
+					'uploaderButtonText' => __( 'Select', 'minimob' ),
 				),
 				'settings' => array(
 					'nonce' => wp_create_nonce( 'update-menu-item' ),
@@ -482,22 +485,22 @@ class Menu_Image_Plugin {
 		$thumbnail_id = get_post_thumbnail_id( $item_id );
 		$content      = sprintf(
 			$markup,
-			esc_html__( 'Menu image', 'imagazine' ),
-			$thumbnail_id ? esc_attr__( 'Change menu item image', 'imagazine' ) : esc_attr__( 'Set menu item image', 'imagazine' ),
+			esc_html__( 'Menu image', 'minimob' ),
+			$thumbnail_id ? esc_attr__( 'Change menu item image', 'minimob' ) : esc_attr__( 'Set menu item image', 'minimob' ),
 			'',
 			$item_id,
-			$thumbnail_id ? wp_get_attachment_image( $thumbnail_id, $default_size ) : esc_html__( 'Set image', 'imagazine' ),
-			$thumbnail_id ? '<a href="#" class="remove-post-thumbnail">' . __( 'Remove', 'imagazine' ) . '</a>' : ''
+			$thumbnail_id ? wp_get_attachment_image( $thumbnail_id, $default_size ) : esc_html__( 'Set image', 'minimob' ),
+			$thumbnail_id ? '<a href="#" class="remove-post-thumbnail">' . __( 'Remove', 'minimob' ) . '</a>' : ''
 		);
 		$hover_id = get_post_meta( $item_id, '_thumbnail_hover_id', true );
 		$content .= sprintf(
 			$markup,
-			esc_html__( 'Image on hover', 'imagazine' ),
-			$hover_id ? esc_attr__( 'Change menu item image on hover', 'imagazine' ) : esc_attr__( 'Set menu item image on hover', 'imagazine' ),
+			esc_html__( 'Image on hover', 'minimob' ),
+			$hover_id ? esc_attr__( 'Change menu item image on hover', 'minimob' ) : esc_attr__( 'Set menu item image on hover', 'minimob' ),
 			' hover-image',
 			$item_id,
-			$hover_id ? wp_get_attachment_image( $hover_id, $default_size ) : esc_html__( 'Set image on hover', 'imagazine' ),
-			$hover_id ? '<a href="#" class="remove-post-thumbnail hover-image">' . __( 'Remove', 'imagazine' ) . '</a>' : ''
+			$hover_id ? wp_get_attachment_image( $hover_id, $default_size ) : esc_html__( 'Set image on hover', 'minimob' ),
+			$hover_id ? '<a href="#" class="remove-post-thumbnail hover-image">' . __( 'Remove', 'minimob' ) . '</a>' : ''
 		);
 		return $content;
 	}
@@ -525,12 +528,12 @@ class Menu_Image_Plugin {
 
 		<div class="menu-item-image-options">
 			<p class="description description-wide">
-				<label for="edit-menu-item-image-size-<?php echo $item_id; ?>"><?php _e( 'Image size', 'imagazine' ); ?>
+				<label for="edit-menu-item-image-size-<?php echo $item_id; ?>"><?php _e( 'Image size', 'minimob' ); ?>
 					<br />
 					<select id="edit-menu-item-image-size-<?php echo $item_id; ?>"
 							class="widefat edit-menu-item-image-size"
 							name="menu_item_image_size[<?php echo $item_id; ?>]">
-						<option value='full' <?php echo $image_size == 'full' ? ' selected="selected"' : '' ?>><?php _e( 'Original Size', 'imagazine' ) ?></option>
+						<option value='full' <?php echo $image_size == 'full' ? ' selected="selected"' : '' ?>><?php _e( 'Original Size', 'minimob' ) ?></option>
 						<?php foreach ( get_intermediate_image_sizes() as $size ) :
 							printf(
 								"<option value='%s'%s>%s</option>\n",
@@ -548,16 +551,16 @@ class Menu_Image_Plugin {
 				 * Modified Oddsized 20161007:
 				 *
 				 * Added 'Description' in title
-				 * original: _e( 'Title position', 'imagazine' );
+				 * original: _e( 'Title position', 'minimob' );
 				 */
-				_e( 'Position Title & Description ', 'imagazine' ); ?></label><br />
+				_e( 'Position Title & Description ', 'minimob' ); ?></label><br />
 				<?php
 				$positions = array(
-					'hide'   => __( 'Hide', 'imagazine' ),
-					'above'  => __( 'Above', 'imagazine' ),
-					'below'  => __( 'Below', 'imagazine' ),
-					'before' => __( 'Before', 'imagazine' ),
-					'after'  => __( 'After', 'imagazine' ),
+					'hide'   => __( 'Hide', 'minimob' ),
+					'above'  => __( 'Above', 'minimob' ),
+					'below'  => __( 'Below', 'minimob' ),
+					'before' => __( 'Before', 'minimob' ),
+					'after'  => __( 'After', 'minimob' ),
 				);
 				foreach ( $positions as $position => $label ) :
 					printf(
@@ -727,11 +730,11 @@ class Menu_Image_Walker_Nav_Menu_Edit extends Walker_Nav_Menu_Edit {
 		if ( ! empty( $item->_invalid ) ) {
 			$classes[] = 'menu-item-invalid';
 			/* translators: %s: title of menu item which is invalid */
-			$title = sprintf( __( '%s (Invalid)', 'imagazine' ), $item->title );
+			$title = sprintf( __( '%s (Invalid)', 'minimob' ), $item->title );
 		} elseif ( isset( $item->post_status ) && 'draft' == $item->post_status ) {
 			$classes[] = 'pending';
 			/* translators: %s: title of menu item in draft status */
-			$title = sprintf( __('%s (Pending)', 'imagazine'), $item->title );
+			$title = sprintf( __('%s (Pending)', 'minimob'), $item->title );
 		}
 		$title = ( ! isset( $item->label ) || '' == $item->label ) ? $title : $item->label;
 		$submenu_text = '';
@@ -741,7 +744,7 @@ class Menu_Image_Walker_Nav_Menu_Edit extends Walker_Nav_Menu_Edit {
 		<li id="menu-item-<?php echo $item_id; ?>" class="<?php echo implode(' ', $classes ); ?>">
 			<dl class="menu-item-bar">
 				<dt class="menu-item-handle">
-					<span class="item-title"><span class="menu-item-title"><?php echo esc_html( $title ); ?></span> <span class="is-submenu" <?php echo $submenu_text; ?>><?php _e( 'sub item' , 'imagazine'); ?></span></span>
+					<span class="item-title"><span class="menu-item-title"><?php echo esc_html( $title ); ?></span> <span class="is-submenu" <?php echo $submenu_text; ?>><?php _e( 'sub item' , 'minimob'); ?></span></span>
 					<span class="item-controls">
 						<span class="item-type"><?php echo esc_html( $item->type_label ); ?></span>
 						<span class="item-order hide-if-js">
@@ -756,7 +759,7 @@ class Menu_Image_Walker_Nav_Menu_Edit extends Walker_Nav_Menu_Edit {
 									),
 									'move-menu_item'
 								);
-							?>" class="item-move-up"><abbr title="<?php esc_attr_e('Move up', 'imagazine'); ?>">&#8593;</abbr></a>
+							?>" class="item-move-up"><abbr title="<?php esc_attr_e('Move up', 'minimob'); ?>">&#8593;</abbr></a>
 							|
 							<a href="<?php
 								echo wp_nonce_url(
@@ -769,11 +772,11 @@ class Menu_Image_Walker_Nav_Menu_Edit extends Walker_Nav_Menu_Edit {
 									),
 									'move-menu_item'
 								);
-							?>" class="item-move-down"><abbr title="<?php esc_attr_e('Move down', 'imagazine'); ?>">&#8595;</abbr></a>
+							?>" class="item-move-down"><abbr title="<?php esc_attr_e('Move down', 'minimob'); ?>">&#8595;</abbr></a>
 						</span>
-						<a class="item-edit" id="edit-<?php echo $item_id; ?>" title="<?php esc_attr_e('Edit Menu Item', 'imagazine'); ?>" href="<?php
+						<a class="item-edit" id="edit-<?php echo $item_id; ?>" title="<?php esc_attr_e('Edit Menu Item', 'minimob'); ?>" href="<?php
 							echo ( isset( $_GET['edit-menu-item'] ) && $item_id == $_GET['edit-menu-item'] ) ? admin_url( 'nav-menus.php' ) : add_query_arg( 'edit-menu-item', $item_id, remove_query_arg( $removed_args, admin_url( 'nav-menus.php#menu-item-settings-' . $item_id ) ) );
-						?>"><?php _e( 'Edit Menu Item' , 'imagazine'); ?></a>
+						?>"><?php _e( 'Edit Menu Item' , 'minimob'); ?></a>
 					</span>
 				</dt>
 			</dl>
@@ -782,38 +785,38 @@ class Menu_Image_Walker_Nav_Menu_Edit extends Walker_Nav_Menu_Edit {
 				<?php if( 'custom' == $item->type ) : ?>
 					<p class="field-url description description-wide">
 						<label for="edit-menu-item-url-<?php echo $item_id; ?>">
-							<?php _e( 'URL', 'imagazine' ); ?><br />
+							<?php _e( 'URL', 'minimob' ); ?><br />
 							<input type="text" id="edit-menu-item-url-<?php echo $item_id; ?>" class="widefat code edit-menu-item-url" name="menu-item-url[<?php echo $item_id; ?>]" value="<?php echo esc_attr( $item->url ); ?>" />
 						</label>
 					</p>
 				<?php endif; ?>
 				<p class="description description-thin">
 					<label for="edit-menu-item-title-<?php echo $item_id; ?>">
-						<?php _e( 'Navigation Label', 'imagazine' ); ?><br />
+						<?php _e( 'Navigation Label', 'minimob' ); ?><br />
 						<input type="text" id="edit-menu-item-title-<?php echo $item_id; ?>" class="widefat edit-menu-item-title" name="menu-item-title[<?php echo $item_id; ?>]" value="<?php echo esc_attr( $item->title ); ?>" />
 					</label>
 				</p>
 				<p class="description description-thin">
 					<label for="edit-menu-item-attr-title-<?php echo $item_id; ?>">
-						<?php _e( 'Title Attribute', 'imagazine' ); ?><br />
+						<?php _e( 'Title Attribute', 'minimob' ); ?><br />
 						<input type="text" id="edit-menu-item-attr-title-<?php echo $item_id; ?>" class="widefat edit-menu-item-attr-title" name="menu-item-attr-title[<?php echo $item_id; ?>]" value="<?php echo esc_attr( $item->post_excerpt ); ?>" />
 					</label>
 				</p>
 				<p class="field-link-target description">
 					<label for="edit-menu-item-target-<?php echo $item_id; ?>">
 						<input type="checkbox" id="edit-menu-item-target-<?php echo $item_id; ?>" value="_blank" name="menu-item-target[<?php echo $item_id; ?>]"<?php checked( $item->target, '_blank' ); ?> />
-						<?php _e( 'Open link in a new window/tab', 'imagazine' ); ?>
+						<?php _e( 'Open link in a new window/tab', 'minimob' ); ?>
 					</label>
 				</p>
 				<p class="field-css-classes description description-thin">
 					<label for="edit-menu-item-classes-<?php echo $item_id; ?>">
-						<?php _e( 'CSS Classes (optional)', 'imagazine' ); ?><br />
+						<?php _e( 'CSS Classes (optional)', 'minimob' ); ?><br />
 						<input type="text" id="edit-menu-item-classes-<?php echo $item_id; ?>" class="widefat code edit-menu-item-classes" name="menu-item-classes[<?php echo $item_id; ?>]" value="<?php echo esc_attr( implode(' ', $item->classes ) ); ?>" />
 					</label>
 				</p>
 				<p class="field-xfn description description-thin">
 					<label for="edit-menu-item-xfn-<?php echo $item_id; ?>">
-						<?php _e( 'Link Relationship (XFN)', 'imagazine' ); ?><br />
+						<?php _e( 'Link Relationship (XFN)', 'minimob' ); ?><br />
 						<input type="text" id="edit-menu-item-xfn-<?php echo $item_id; ?>" class="widefat code edit-menu-item-xfn" name="menu-item-xfn[<?php echo $item_id; ?>]" value="<?php echo esc_attr( $item->xfn ); ?>" />
 					</label>
 				</p>
@@ -826,7 +829,7 @@ class Menu_Image_Walker_Nav_Menu_Edit extends Walker_Nav_Menu_Edit {
 
 				<p class="field-description description description-wide">
 					<label for="edit-menu-item-description-<?php echo $item_id; ?>">
-						<?php _e( 'Description' , 'imagazine'); ?><br />
+						<?php _e( 'Description' , 'minimob'); ?><br />
 						<textarea id="edit-menu-item-description-<?php echo $item_id; ?>" class="widefat edit-menu-item-description" rows="3" cols="20" name="menu-item-description[<?php echo $item_id; ?>]"><?php echo esc_html( $item->description ); // textarea_escaped ?></textarea>
                         <?php /**
 							 * Modified Oddsized 20161007:
@@ -836,7 +839,7 @@ class Menu_Image_Walker_Nav_Menu_Edit extends Walker_Nav_Menu_Edit {
 							 *
 							 */
 							 ?>
-                        <span class="description"><?php _e('If not blank the Description will be positioned right below the Navigation Label.', 'imagazine'); ?></span>
+                        <span class="description"><?php _e('If not blank the Description will be positioned right below the Navigation Label.', 'minimob'); ?></span>
 
 
                     </label>
@@ -844,19 +847,19 @@ class Menu_Image_Walker_Nav_Menu_Edit extends Walker_Nav_Menu_Edit {
 
 				<p class="field-move hide-if-no-js description description-wide">
 					<label>
-						<span><?php _e( 'Move', 'imagazine' ); ?></span>
-						<a href="#" class="menus-move menus-move-up" data-dir="up"><?php _e( 'Up one', 'imagazine' ); ?></a>
-						<a href="#" class="menus-move menus-move-down" data-dir="down"><?php _e( 'Down one', 'imagazine' ); ?></a>
+						<span><?php _e( 'Move', 'minimob' ); ?></span>
+						<a href="#" class="menus-move menus-move-up" data-dir="up"><?php _e( 'Up one', 'minimob' ); ?></a>
+						<a href="#" class="menus-move menus-move-down" data-dir="down"><?php _e( 'Down one', 'minimob' ); ?></a>
 						<a href="#" class="menus-move menus-move-left" data-dir="left"></a>
 						<a href="#" class="menus-move menus-move-right" data-dir="right"></a>
-						<a href="#" class="menus-move menus-move-top" data-dir="top"><?php _e( 'To the top', 'imagazine' ); ?></a>
+						<a href="#" class="menus-move menus-move-top" data-dir="top"><?php _e( 'To the top', 'minimob' ); ?></a>
 					</label>
 				</p>
 
 				<div class="menu-item-actions description-wide submitbox">
 					<?php if( 'custom' != $item->type && $original_title !== false ) : ?>
 						<p class="link-to-original">
-							<?php printf( __('Original: %s', 'imagazine'), '<a href="' . esc_attr( $item->url ) . '">' . esc_html( $original_title ) . '</a>' ); ?>
+							<?php printf( __('Original: %s', 'minimob'), '<a href="' . esc_attr( $item->url ) . '">' . esc_html( $original_title ) . '</a>' ); ?>
 						</p>
 					<?php endif; ?>
 					<a class="item-delete submitdelete deletion" id="delete-<?php echo $item_id; ?>" href="<?php
@@ -869,8 +872,8 @@ class Menu_Image_Walker_Nav_Menu_Edit extends Walker_Nav_Menu_Edit {
 							admin_url( 'nav-menus.php' )
 						),
 						'delete-menu_item_' . $item_id
-					); ?>"><?php _e( 'Remove' , 'imagazine'); ?></a> <span class="meta-sep hide-if-no-js"> | </span> <a class="item-cancel submitcancel hide-if-no-js" id="cancel-<?php echo $item_id; ?>" href="<?php echo esc_url( add_query_arg( array( 'edit-menu-item' => $item_id, 'cancel' => time() ), admin_url( 'nav-menus.php' ) ) );
-						?>#menu-item-settings-<?php echo $item_id; ?>"><?php _e('Cancel', 'imagazine'); ?></a>
+					); ?>"><?php _e( 'Remove' , 'minimob'); ?></a> <span class="meta-sep hide-if-no-js"> | </span> <a class="item-cancel submitcancel hide-if-no-js" id="cancel-<?php echo $item_id; ?>" href="<?php echo esc_url( add_query_arg( array( 'edit-menu-item' => $item_id, 'cancel' => time() ), admin_url( 'nav-menus.php' ) ) );
+						?>#menu-item-settings-<?php echo $item_id; ?>"><?php _e('Cancel', 'minimob'); ?></a>
 				</div>
 
 				<input class="menu-item-data-db-id" type="hidden" name="menu-item-db-id[<?php echo $item_id; ?>]" value="<?php echo $item_id; ?>" />
