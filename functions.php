@@ -1,6 +1,7 @@
 <?php
 
-    require get_template_directory() . '/assets/menu.php'; // options functions
+    require get_template_directory() . '/assets/menu.php'; // menu options functions
+    require get_template_directory() . '/assets/postmetabox.php'; // post/page meta option functions
 
 
 	/*

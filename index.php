@@ -26,19 +26,22 @@ jQuery( function($){
 
     $('#slidemenu').after('<div id="slidemenutoggle">menu</div>');
 
+    $('#slidemenu').prepend( $('#site-titlebox').clone() );
 
     $('#slidemenu').animate({ opacity : 0 }, 'fast', function() {
                 $('#slidemenu ul li').hide();
                 $('#slidemenutoggle').html('menu');
-                $('#slidemenu').css({ 'bottom' : '-100%'  });
+                //$('#slidemenu').css({ 'bottom' : '-100%'  });
+                $('#slidemenu').css({ 'top' : '-100%'  });
     });
 
     $('#slidemenutoggle').toggle(
         function() {
 
-            $('#slidemenu').css({ 'bottom' : '0px'  });
-
+            //$('#slidemenu').css({ 'bottom' : '0px'  });
+            $('#slidemenu').css({ 'top' : '0'  });
             var c = 0;
+            //$('.mejs-container').fadeOut(100);
             $('#slidemenu ul li').each( function( idx,obj ){
                 c++;
                 setTimeout(function(){
@@ -63,14 +66,15 @@ jQuery( function($){
             setTimeout(function(){
                 $('#slidemenu').animate({ opacity: 0 }, 300, function() {
                     $('#slidemenutoggle').html('menu');
-                    $('#slidemenu').css({ 'bottom' : '-100%'  });
+                    //$('#slidemenu').css({ 'bottom' : '-100%'  });
+                    $('#slidemenu').css({ 'top' : '-100%'  });
+                    //$('.mejs-container').fadeIn(200);
                 });
             }, 600 );
         }
     );
 
     $(document).ready( function(){
-
 
     });
 });
@@ -93,6 +97,10 @@ echo '>';
 
     echo '<div id="topbar"><div class="outermargin">';
 
+        // logo / taglines etc
+        echo '<div id="site-titlebox"><hgroup><h1 class="site-title"><a href="'.esc_url( home_url( '/' ) ).'" id="site-logo" title="'.esc_attr( get_bloginfo( 'name', 'display' ) ).'" rel="home">'.esc_attr( get_bloginfo( 'name', 'display' ) ).'</a></h1>';
+        //echo '<h2 class="site-description">'.get_bloginfo( 'description' ).'</h2>';
+        echo '</hgroup></div>';
 
         // topmenu
         if ( has_nav_menu( 'topmenu' ) ){
@@ -140,30 +148,55 @@ echo '>';
         post_class();
         echo '>';
 
+        // image
         $featuredImage = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'medium' );
+
+        // define title link
+        $custom_metabox_url = get_post_meta( get_the_ID() , 'meta-box-custom-url', true);
+        $custom_metabox_useurl = get_post_meta( get_the_ID() , 'meta-box-custom-useurl', true);
+        $custom_metabox_urltext = get_post_meta( get_the_ID() , 'meta-box-custom-urltext', true);
+
+        $title_link = '<a href="'.get_the_permalink().'" target="_self" title="'.get_the_title().'">';
+        $image_link = '<a class="coverimage" href="'.get_the_permalink().'" target="_self" title="'.get_the_title().'">';
+        if( $custom_metabox_url != '' && $custom_metabox_useurl == 'replaceblank'){
+            $title_link = '<a href="'.$custom_metabox_url.'" target="_blank" title="'.get_the_title().'">';
+            $image_link = '<a class="coverimage" href="'.$custom_metabox_url.'" target="_blank" title="'.get_the_title().'">';
+        }elseif( $custom_metabox_url != '' && $custom_metabox_useurl == 'replaceself'){
+            $title_link = '<a href="'.$custom_metabox_url.'" target="_self" title="'.get_the_title().'">';
+            $image_link = '<a class="coverimage" href="'.$custom_metabox_url.'" target="_blank" title="'.get_the_title().'">';
+        }
+
         if($featuredImage){
-            echo '<a class="coverimage" href="'.get_the_permalink().'" title="'.get_the_title().'" >';
+            echo $image_link;
             echo '<img class="post-featured-image" src="'.$featuredImage[0].'" />';
             echo '</a>';
         }
 
-        $titlesize = 'h2';
-        if( is_single() || is_page() ){
-            $titlesize = 'h1';
-            echo '<div class="post-title">';
-        }else{
-            echo '<div class="post-title"><a class="title-link" href="'.get_the_permalink().'" title="'.get_the_title().'" >';
-        }
-        echo '<'.$titlesize.'>'.get_the_title().'</'.$titlesize.'>';
-        //echo '<span class="post-date time-ago">';
-		//wp_time_ago(get_the_time( 'U' ));
-		//echo '</span>';
-        //echo ' <span class="post-author">'.__('door','minimob').' '.get_the_author().'</span> ';
 
-        if( is_single() || is_page() ){
-            echo '<div class="clr"></div></div>';
-        }else{
-            echo '</a><div class="clr"></div></div>';
+        if( $custom_metabox_useurl != 'hide' ){
+
+
+
+            $titlesize = 'h2';
+            if( is_single() || is_page() ){
+                $titlesize = 'h1';
+                echo '<div class="post-title">';
+            }else{
+                echo '<div class="post-title">'. $title_link; // <a class="title-link" href="'.get_the_permalink().'" title="'.get_the_title().'" >';
+            }
+            echo '<'.$titlesize.'>'.get_the_title().'</'.$titlesize.'>';
+
+            //echo '<span class="post-date time-ago">';
+            //wp_time_ago(get_the_time( 'U' ));
+            //echo '</span>';
+            //echo ' <span class="post-author">'.__('door','minimob').' '.get_the_author().'</span> ';
+
+            if( is_single() || is_page() ){
+                echo '<div class="clr"></div></div>';
+            }else{
+                echo '</a><div class="clr"></div></div>';
+            }
+
         }
 
         echo '<div class="post-content">';
@@ -173,9 +206,10 @@ echo '>';
 
             if( is_single() ){
 
-                previous_post_link('%link', __('prev: ', 'minimob' ).': %title', false);
+                //previous_post_link('%link', __('prev: ', 'minimob' ).': %title', false);
+                //next_post_link('%link', __('next: ', 'minimob' ).': %title', false);
 
-                next_post_link('%link', __('next: ', 'minimob' ).': %title', false);
+                echo '<div onclick="history.go(-1)">back</div>';
 
                 // post comments
                 if ( comments_open() || get_comments_number() ) {
@@ -185,6 +219,18 @@ echo '>';
 
         }else{
             echo the_excerpt_length( 32 ); // echo apply_filters('the_excerpt', get_the_excerpt());
+        }
+
+
+        // define custom link (internal / external)
+        if( $custom_metabox_url != '' && ($custom_metabox_useurl == 'external' || $custom_metabox_useurl == 'internal') ){
+            $custom_link = '<a href="'.get_the_permalink().'" target="_self" title="'.get_the_title().'">';
+            if( $custom_metabox_url != '' && $custom_metabox_useurl == 'external'){
+            $custom_link = '<a href="'.$custom_metabox_url.'" target="_blank" title="'.get_the_title().'">';
+            }elseif( $custom_metabox_url != '' && $custom_metabox_useurl == 'internal'){
+            $custom_link = '<a href="'.$custom_metabox_url.'" target="_self" title="'.get_the_title().'">';
+            }
+            echo $custom_link.$custom_metabox_urltext.'</a>';
         }
 
 
