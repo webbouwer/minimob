@@ -24,6 +24,8 @@ if ( ! isset( $content_width ) ) $content_width = 360; // mobile first
 <script>
 jQuery( function($){
 
+    $('#slidemenu').css({ 'z-index' : '980'  });
+
     $('#slidemenu').after('<div id="slidemenutoggle">menu</div>');
 
     $('#slidemenu').prepend( $('#site-titlebox').clone() );
@@ -34,7 +36,9 @@ jQuery( function($){
                 //$('#slidemenu').css({ 'bottom' : '-100%'  });
                 $('#slidemenu').css({ 'top' : '-100%'  });
     });
-
+    $('#slidemenu').on('click', function(){
+        $('#slidemenutoggle').trigger();
+    });
     $('#slidemenutoggle').toggle(
         function() {
 
@@ -93,7 +97,11 @@ body_class();
 echo '>';
 
 
-     echo '<div id="pagecontainer">';
+    echo '<div id="pagecontainer">';
+
+    if( !is_front_page() ){
+        echo '<div id="pagebackbutton" onclick="history.go(-1)">back</div>';
+    }
 
     echo '<div id="topbar"><div class="outermargin">';
 
@@ -131,8 +139,12 @@ echo '>';
 
     echo '<div id="maincontainer"><div class="outermargin">';
 
+    $morestyle = '';
+    if( is_category() ){
+        $morestyle = 'category';
+    }
 
-     echo '<div id="maincontent" class="modal-content">';
+     echo '<div id="maincontent" class="modal-content '.$morestyle.'">';
 
             if( function_exists('dynamic_sidebar') && function_exists('is_sidebar_active') && is_sidebar_active('widgets-before-content') ){
 
@@ -208,8 +220,6 @@ echo '>';
 
                 //previous_post_link('%link', __('prev: ', 'minimob' ).': %title', false);
                 //next_post_link('%link', __('next: ', 'minimob' ).': %title', false);
-
-                echo '<div onclick="history.go(-1)">back</div>';
 
                 // post comments
                 if ( comments_open() || get_comments_number() ) {

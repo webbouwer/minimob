@@ -178,7 +178,7 @@
 	function wp_time_ago( $t ) {
 		// https://codex.wordpress.org/Function_Reference/human_time_diff
 		//get_the_time( 'U' )
-		printf( _x( '%s '.__('ago','minimob'), '%s = human-readable time difference', 'minimob' ), human_time_diff( $t, current_time( 'timestamp' ) ) );
+		printf( _x( '%s '.__('geleden','minimob'), '%s = human-readable time difference', 'minimob' ), human_time_diff( $t, current_time( 'timestamp' ) ) );
 	}
 
 

@@ -41,128 +41,44 @@ if ( !empty( $comments ) ) {
 // If comments are closed and there are comments, let's leave a little note, shall we?
 if ( ! comments_open() && get_comments_number() && post_type_supports( get_post_type(), 'comments' ) ) :
 ?>
-<p class="no-comments"><?php _e( 'Comments are closed.', 'twentyfifteen' ); ?></p>
+<p class="no-comments"><?php _e( 'Berichten gesloten.', 'minimob' ); ?></p>
 
 <?php endif;
+$commenter = wp_get_current_commenter();
+$req = get_option( 'require_name_email' );
+$aria_req = ( $req ? " aria-required='true'" : '' );
 
-comment_form();
+$comment_args = array( 'title_reply'=>'Nieuw bericht:',
 
+'fields' => apply_filters(
+    'comment_form_default_fields', array(
 
-/*
+        'author' =>
+        '<div class="comments-nameinput"><label for="author">' . __( 'Naam', 'minimob' ) .
+        ( $req ? '<span class="required">*</span>' : '' ) . '</label>' .
+        '<input id="author" name="author" type="text" value="' . esc_attr( $commenter['comment_author'] ) . '" size="30" ' . $aria_req . ' /></div>',
 
-function minimob_under_comments($comment, $args, $depth) {
+        /*'email' =>
+        '<div><label for="email">' . __( 'Email' ) . '</label> ' . ( $req ? '<span>*</span>' : '' ) .
+        '<input id="email" name="email" type="text" value="' . esc_attr( $commenter['comment_author_email'] ) . '" size="30″‘ . $aria_req . ‘ /></div>',
+         */
 
-$tag = ( 'div' === $args['style'] ) ? 'div' : 'li'; ?>
+        'email' =>
+        '<div class="comments-emailinput"><label for="email">' . __( 'Email', 'minimob' ) .
+        ( $req ? '<span class="required">*</span>' : '' ) . '</label>' .
+        '<input id="email" name="email" type="text" value="' . esc_attr(  $commenter['comment_author_email'] ) . '" size="30" ' . $aria_req . ' /></div>',
 
-<?php echo $tag; ?> id="comment-<?php comment_ID(); ?>" <?php comment_class(); ?>>
+        'url' => '' ) ),
 
-            <article id="div-comment-<?php comment_ID(); ?>" class="comment-body">
-                <div class="row">
-  <div class="small-3 columns">
-      <div class="gravatar-container">
-          <?php if ( 0 != $args['avatar_size'] ) echo get_avatar( $comment, $args['avatar_size'] ); ?>
-      </div><!-- .comment-meta -->
-  </div>
-  <div class="small-9 columns">    <div class="comment-meta">
+        'comment_field' =>
+        '<div class="comments-textinput"><label for="comment">'. __( 'Bericht:' ) . '</label>' .
+        '<textarea id="comment" name="comment" cols="45″ rows="8″ aria-required="true"></textarea></div>',
 
-                    <div class="comment-author">
-
-                        <?php printf( __( '%s' ), sprintf( '<span class="commenter">%s</span>', get_comment_author_link() ) ); ?>
-                    </div><!-- .comment-author -->
-
-                    <div class="comment-metadata">
-                        <a href="<?php echo esc_url( get_comment_link( $comment->comment_ID, $args ) ); ?>">
-                            <time datetime="<?php comment_time( 'c' ); ?>">
-                                <?php printf( _x( '%1$s at %2$s', '1: date, 2: time' ), get_comment_date(), get_comment_time() ); ?>
-                            </time>
-                        </a>
-                     </div><!-- .comment-metadata -->
-
-                    <?php if ( '0' == $comment->comment_approved ) : ?>
-                    <p class="comment-awaiting-moderation"><?php _e( 'Your comment is awaiting moderation.' ); ?></p>
-                    <?php endif; ?>
-                </footer><!-- .comment-meta -->
-                   <div class="comment-content">
-                    <?php comment_text(); ?>
-                </div><!-- .comment-content -->
-  </div>
-
-</div>
-
-  <div class="small-12 columns">
-
-                <?php
-                comment_reply_link( array_merge( $args, array(
-                    'add_below' => 'div-comment',
-                    'depth'     => $depth,
-                    'max_depth' => $args['max_depth'],
-                    'before'    => '<div class="reply">',
-                    'after'     => '</div>'
-                ) ) );
-                ?>
-
-      </div>
-</article><!-- .comment-body -->
-<?php
-}
+        'label_submit' => __('verstuur'),
+        'comment_notes_before' => '',
+        'comment_notes_after' => '',
+);
+comment_form($comment_args);
 
 
-?>
-
-<div id="comments" class="comments-area">
-
-	<?php if ( have_comments() ) : /* ?>
-		<h2 class="comments-title">
-			<?php
-				$comments_number = get_comments_number();
-				if ( '1' === $comments_number ) {
-					/* translators: %s: post title
-					printf( _x( 'One thought on &ldquo;%s&rdquo;', 'comments title', 'twentyfifteen' ), get_the_title() );
-				} else {
-					printf(
-						/* translators: 1: number of comments, 2: post title
-						_nx(
-							'%1$s thought on &ldquo;%2$s&rdquo;',
-							'%1$s thoughts on &ldquo;%2$s&rdquo;',
-							$comments_number,
-							'comments title',
-							'minimob'
-						),
-						number_format_i18n( $comments_number ),
-						get_the_title()
-					);
-				}
-			?>
-		</h2>
-
-		<?php //twentyfifteen_comment_nav();
-
-            wp_list_comments( array(
-                'callback' => minimob_under_comments,
-            ) );
-
-
-				wp_list_comments( array(
-					'style'       => 'ul',
-					'type'  => 'comment',
-					//'avatar_size' => 56,
-				) );
-			?>
-		<!-- .comment-list -->
-
-		<?php //twentyfifteen_comment_nav(); ?>
-
-	<?php endif; // have_comments() ?>
-
-	<?php
-		// If comments are closed and there are comments, let's leave a little note, shall we?
-		if ( ! comments_open() && get_comments_number() && post_type_supports( get_post_type(), 'comments' ) ) :
-	?>
-		<p class="no-comments"><?php _e( 'Comments are closed.', 'twentyfifteen' ); ?></p>
-	<?php endif; ?>
-
-	<?php comment_form(); ?>
-    <br /><br />
-</div><!-- .comments-area -->
-*/
 ?>
