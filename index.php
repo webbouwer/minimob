@@ -37,8 +37,12 @@ jQuery( function($){
                 $('#slidemenu').css({ 'top' : '-100%'  });
     });
     $('#slidemenu').on('click', function(){
-        $('#slidemenutoggle').trigger();
+
+        setTimeout(function(){
+        $('#slidemenutoggle').click();
+        }, 200);
     });
+
     $('#slidemenutoggle').toggle(
         function() {
 

@@ -117,9 +117,9 @@ a.coverimage img
 {
 width:auto;
 background-size: cover;
-width:240px;
-height:240px;
-border-radius: 240px;
+width:220px;
+height:220px;
+border-radius: 220px;
 }
 .category a.coverimage img
 {
@@ -129,13 +129,19 @@ width:180px;
 height:180px;
 border-radius: 180px;
 }
-
+.page .post-content img.alignnone,
+.post .post-content img.alignnone
+{
+width:100% !important;
+height:auto !important;
+border-radius: 4px;
+}
 
 
 #maincontainer
 {
 z-index:99;
-padding-bottom:30px;
+padding-bottom:40px;
 position:relative;
 }
 #maincontent .post-title
@@ -144,10 +150,14 @@ text-align:center;
 }
 #maincontent .post-content
 {
-padding-top:5%;
+padding-top:5px;
 padding-bottom:15%;
 }
 
+.category #maincontent .post-content p
+{
+text-align: center;
+}
 
 
 .mejs-container
