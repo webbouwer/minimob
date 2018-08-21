@@ -87,9 +87,8 @@ jQuery( function($){
     });
 });
 </script>
-<?
+<?php
 // https://css-tricks.com/perfect-full-page-background-image/
-
 $bgposition = get_theme_mod('background_position', 'bottom center');
 $bgattacht = get_theme_mod('background_attachment', 'fixed');
 $bgrepeat = get_theme_mod('background_repeat', 'no-repeat');
@@ -99,7 +98,6 @@ $headerbgstyle = ' style="background-image:url('.esc_url( get_background_image()
 echo '</head><body '.$headerbgstyle.' ';
 body_class();
 echo '>';
-
 
     echo '<div id="pagecontainer">';
 
@@ -121,10 +119,7 @@ echo '>';
             echo '<div class="clr"></div></div></nav></div></div>';
         }
 
-
-
 	echo '<div class="clr"></div></div></div>';
-
 
     $header_image = get_header_image();
 	$headerbgstyle = '';
@@ -137,9 +132,7 @@ echo '>';
 			dynamic_sidebar('widgets-header');
 		}
 
-
 	echo '<div class="clr"></div></div></div>';
-
 
     echo '<div id="maincontainer"><div class="outermargin">';
 
@@ -147,9 +140,7 @@ echo '>';
     if( is_category() ){
         $morestyle = 'category';
     }
-
-     echo '<div id="maincontent" class="modal-content '.$morestyle.'">';
-
+    echo '<div id="maincontent" class="modal-content '.$morestyle.'">';
             if( function_exists('dynamic_sidebar') && function_exists('is_sidebar_active') && is_sidebar_active('widgets-before-content') ){
 
             echo '<div id="widgets-before-content">';

@@ -10,33 +10,7 @@ if ( post_password_required() ) {
 
 
 
-// Arguments for the query
-$args = array();
 
-// The comment query
-$comments_query = new WP_Comment_Query;
-$comments = $comments_query->query( $args );
-
-// The comment loop
-if ( !empty( $comments ) ) {
-    echo '<ul>';
-    foreach ( $comments as $comment ) {
-        //comment_author
-        //comment_content
-        //comment_date / comment_date_gmt
-        echo '<li class="comment">';
-            echo '<div class="message">'. $comment->comment_content .'</div>';
-            echo '<div class="author">'. $comment->comment_author.'</div>';
-            echo '<div class="time">';
-            echo wp_time_ago( strtotime($comment->comment_date) );
-            echo '</div>';
-        echo '</li>';
-        //print_r($comment);
-    }
-    echo '</ul>';
-} else {
-    echo 'No comments found.';
-}
 
 // If comments are closed and there are comments, let's leave a little note, shall we?
 if ( ! comments_open() && get_comments_number() && post_type_supports( get_post_type(), 'comments' ) ) :
@@ -80,5 +54,33 @@ $comment_args = array( 'title_reply'=>'Nieuw bericht:',
 );
 comment_form($comment_args);
 
+
+// Arguments for the query
+$args = array();
+
+// The comment query
+$comments_query = new WP_Comment_Query;
+$comments = $comments_query->query( $args );
+
+// The comment loop
+if ( !empty( $comments ) ) {
+    echo '<ul>';
+    foreach ( $comments as $comment ) {
+        //comment_author
+        //comment_content
+        //comment_date / comment_date_gmt
+        echo '<li class="comment">';
+            echo '<div class="message">'. $comment->comment_content .'</div>';
+            echo '<div class="author">'. $comment->comment_author.'</div>';
+            echo '<div class="time">';
+            echo wp_time_ago( strtotime($comment->comment_date) );
+            echo '</div>';
+        echo '</li>';
+        //print_r($comment);
+    }
+    echo '</ul>';
+} else {
+    echo 'No comments found.';
+}
 
 ?>
